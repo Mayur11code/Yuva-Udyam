@@ -35,6 +35,9 @@ model User {
   name         String?
   resumeUrl    String?       // For the "Rate My Resume" feature
   role     String
+  resumeText   String?       @db.Text
+  resumeScore  Int?
+  skills       String[]
   applications Application[] // Tracking all jobs the user applied to
 }
 

@@ -7,35 +7,41 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { toast } from "sonner";
 import { analyzeResume } from '@/src/app/actions/ResumeScore'; // ADJUST PATH IF NEEDED
+import { uploadAndStoreResume } from '@/src/app/actions/jobs/Analyse';
 
 export function ResumeScorer() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [data, setData] = useState<any>(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+ // Inside src/components/dashboard/ResumeScorer.tsx
+const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    setIsAnalyzing(true);
-    const toastId = toast.loading("AI is scanning your credentials...");
+  setIsAnalyzing(true);
+  const toastId = toast.loading("Syncing resume to Forge profile...");
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = async () => {
-      const base64 = reader.result?.toString().split(',')[1];
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = async () => {
+    const base64 = reader.result?.toString().split(',')[1];
+    
+    if (base64) {
+      // Use the new action to store in DB
+      const result = await uploadAndStoreResume("user_2026_forge", base64);
       
-      if (base64) {
-        const result = await analyzeResume(base64);
-        if (result) {
-          setData(result);
-          toast.success("Intelligence report generated!", { id: toastId });
-        } else {
-          toast.error("Analysis failed. Try a different PDF.", { id: toastId });
-        }
+      if (result.success) {
+        // Now that it's saved, you can also get the score
+        const analysis = await analyzeResume(base64);
+        setData(analysis);
+        toast.success("Resume saved & analyzed!", { id: toastId });
+      } else {
+        toast.error("Database sync failed.", { id: toastId });
       }
-      setIsAnalyzing(false);
-    };
+    }
+    setIsAnalyzing(false);
   };
+};
 
   return (
     <Card className="bg-[#151921] border-slate-800 shadow-xl overflow-hidden">

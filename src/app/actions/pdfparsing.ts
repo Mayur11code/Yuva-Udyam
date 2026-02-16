@@ -82,7 +82,7 @@ Return ONLY raw JSON. No markdown.
         location: parsedData.location || "Remote",
         deadline: parsedData.deadline,
         skills: parsedData.skills_required,
-        vacancies: parsedData.vacancy_count,
+        
       },
     });
 

@@ -136,13 +136,7 @@ export default function OrgDashboard() {
                         </div>
                      </div>
 
-                     <Button onClick={async () => {
-                       toast.promise(saveJobToDB(parsedData), {
-                         loading: 'Saving to Neon Postgres...',
-                         success: () => { setParsedData(null); return 'Job Live on National Portal!'; },
-                         error: 'Failed to publish.',
-                       });
-                     }} className="w-full bg-emerald-600 hover:bg-emerald-500 h-14 text-lg font-bold gap-2">
+                     <Button onClick={() => {toast.success("Publishing to National Database...")}} className="w-full bg-emerald-600 hover:bg-emerald-500 h-14 text-lg font-bold gap-2">
                        <Database className="w-5 h-5" /> Publish to National Database
                      </Button>
                   </div>

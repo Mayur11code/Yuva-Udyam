@@ -3,18 +3,32 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2, ExternalLink, Mic2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getAllJobs } from '@/src/app/actions/loadJobs';
 import { generateCareerRoadmap } from '@/src/app/actions/jobs/GapAnalysis';
 import { RoadmapModal } from './RoadMapModal'; // IMPORT THE MODAL
 import { toast } from "sonner";
+import { applyToJob } from '@/src/app/actions/jobs/Apply';
+import { JobDetailsModal } from './JobDetailsModal';
 
 export function JobFeed() {
+  const router = useRouter();
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRoadmap, setSelectedRoadmap] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const handleOpenDetails = (job: any) => {
+    setSelectedJob(job);
+    setIsDetailsOpen(true);
+  };
+
+
 
   const handleJobClick = async (jobId: string) => {
     const toastId = toast.loading("Analyzing skill gaps with Gemini...");
@@ -23,7 +37,7 @@ export function JobFeed() {
       console.log("Generating roadmap for user_2026_forge and jobId:", jobId);
       const roadmapData = await generateCareerRoadmap("user_2026_forge", jobId);
       console.log("Roadmap Data:", roadmapData);
-      setSelectedRoadmap(roadmapData); 
+      setSelectedRoadmap(roadmapData);
       setIsModalOpen(true);
       toast.dismiss(toastId);
     } catch (error) {
@@ -72,9 +86,9 @@ export function JobFeed() {
             </thead>
             <tbody className="divide-y divide-slate-800/50">
               {jobs.map((job) => (
-                <tr 
-                  key={job.id} 
-                  onClick={() => handleJobClick(job.id)} 
+                <tr
+                  key={job.id}
+                  onClick={() => handleOpenDetails(job)} // Trigger the new Modal
                   className="hover:bg-blue-500/5 transition-colors group cursor-pointer"
                 >
                   <td className="px-6 py-4">
@@ -87,31 +101,42 @@ export function JobFeed() {
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-500 hover:text-white">
                         <ExternalLink className="w-4 h-4" />
-                      </Button>
-                      <Button 
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-500 text-white h-8 px-3 text-xs font-bold flex gap-2"
-                        onClick={(e) => {
-                          e.stopPropagation(); // PREVENTS ROADMAP FROM OPENING
-                          toast.info(`Launching Interview for ${job.role}`);
-                        }}
-                      >
-                        <Mic2 className="w-3.5 h-3.5" /> Practice
+                        <Button
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-500 text-white h-8 px-3 text-xs font-bold flex gap-2"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevents the Roadmap modal from opening
+                            toast.info(`Launching Interview for ${job.role}`);
+
+                            // NEW: Navigate to the interview page with the jobId parameter
+                            router.push(`./dashboard/interview?jobId=${job.id}`);
+                          }}>
+                          <Mic2 className="w-3.5 h-3.5" /> Practice
+                        </Button>
                       </Button>
                     </div>
+
                   </td>
+
                 </tr>
+
               ))}
+
             </tbody>
           </table>
         </div>
       </Card>
-
+      <JobDetailsModal
+        job={selectedJob}
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        userId="user_2026_forge"
+      />
       {/* MODAL COMPONENT */}
-      <RoadmapModal 
-        data={selectedRoadmap} 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <RoadmapModal
+        data={selectedRoadmap}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </>
   );

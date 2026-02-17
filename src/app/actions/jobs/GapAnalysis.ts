@@ -16,7 +16,7 @@ export async function generateCareerRoadmap(userId: string, jobId: string) {
       return null;
     }
 
-    // 2. Initialize Gemini 1.5 Flash
+    
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
       generationConfig: { responseMimeType: "application/json" }

@@ -51,6 +51,8 @@ model Application {
   user        User       @relation(fields: [userId], references: [id])
   interview   Interview? // One-to-one relation with the AI interview result
   createdAt   DateTime   @default(now())
+
+  @@unique([userId, jobId])
 }
 
 // 4. Interview model for AI Feedback

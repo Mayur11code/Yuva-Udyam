@@ -2,7 +2,7 @@
 
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Star, ExternalLink, ArrowRight } from 'lucide-react';
+import { PlayCircle, Clock, Star, ExternalLink, ArrowRight } from 'lucide-react';
 
 interface CourseCardProps {
   course: {
@@ -16,92 +16,69 @@ interface CourseCardProps {
 
 export function CourseCard({ course }: CourseCardProps) {
   return (
-    <Card
-  className="group relative bg-[#151921] border border-slate-800
-             overflow-hidden transition-all duration-300
-             hover:border-blue-500/30
-             w-[240px]"
->
-
-
-      {/* Thumbnail */}
-      <div className="aspect-[16/11] relative overflow-hidden">
-        <img
-          src={course.thumbnail}
-          alt={course.title}
-          className="w-full h-full object-cover
-                     transition-transform duration-500
-                     group-hover:scale-105"
+    <Card className="group relative bg-[#151921] border-slate-800 overflow-hidden hover:border-blue-500/50 transition-all duration-500 shadow-lg max-w-[320px] w-full"> {/* Added max-w and shadow-lg */}
+      {/* 1. THUMBNAIL AREA */}
+      <div className="aspect-[16/9] relative overflow-hidden"> {/* Changed from aspect-video to aspect-[16/9] for a tighter ratio */}
+        <img 
+          src={course.thumbnail} 
+          alt={course.title} 
+          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" /* Reduced scale and increased initial opacity */
         />
+        
+        {/* Cinematic Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-transparent opacity-90" />
+        <div className="absolute inset-0 bg-blue-600/5 group-hover:bg-transparent transition-colors duration-500" />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14]/80 via-transparent to-transparent" />
-
-        <div className="absolute top-2 left-2">
-          <Badge className="bg-black/50 backdrop-blur border-slate-700 text-[8px] font-mono text-blue-400 px-2 py-0.5">
-            LIVE
-          </Badge>
+        {/* Floating "Go" Button */}
+        <div className="absolute bottom-3 right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+           <div className="bg-blue-600 p-2 rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)]"> {/* Smaller button and shadow */}
+              <ExternalLink className="w-3.5 h-3.5 text-white" /> {/* Smaller icon */}
+           </div>
         </div>
 
-        <div className="absolute bottom-2 right-2 opacity-0 translate-y-2
-                        group-hover:opacity-100 group-hover:translate-y-0
-                        transition-all duration-300">
-          <div className="bg-blue-600 p-1.5 rounded-md">
-            <ExternalLink className="w-3 h-3 text-white" />
-          </div>
+        {/* "Learning" Indicator */}
+        <div className="absolute top-3 left-3">
+           <Badge className="bg-black/60 backdrop-blur-md border-slate-700 text-[9px] font-mono text-blue-400 py-0.5 px-2">
+             LIVE SOURCE
+           </Badge>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-3 space-y-2">
-
+      {/* 2. CONTENT AREA */}
+      <div className="p-4 space-y-3"> {/* Reduced padding and spacing */}
         {/* Tags */}
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1.5">
           {course.tags.slice(0, 2).map((tag: string) => (
-            <span
-              key={tag}
-              className="text-[8px] font-medium text-slate-500
-                         uppercase tracking-wide"
-            >
+            <span key={tag} className="text-[9px] font-black text-slate-500 uppercase tracking-widest border-l-2 border-blue-500 pl-2">
               {tag}
             </span>
           ))}
         </div>
 
         {/* Title */}
-        <h3
-          className="text-sm font-semibold text-white
-                     leading-snug line-clamp-2
-                     group-hover:text-blue-400
-                     transition-colors"
-        >
+        <h3 className="font-bold text-white text-sm leading-tight min-h-[32px] group-hover:text-blue-400 transition-colors"> {/* Smaller line height and min-height */}
           {course.title}
         </h3>
 
-        {/* Footer */}
-        <div className="pt-1 flex items-center justify-between
-                        border-t border-slate-800/60">
-
-          <div className="flex items-center gap-2 text-[9px]
-                          text-slate-500 font-medium">
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3 text-blue-500/70" />
-              Self-Paced
-            </span>
-
-            <span className="flex items-center gap-1">
-              <Star className="w-3 h-3 text-yellow-500/70" />
-              Impact
-            </span>
+        {/* Footer Metrics */}
+        <div className="pt-2 flex items-center justify-between border-t border-slate-800/50">
+          <div className="flex items-center gap-3 text-[10px] font-medium text-slate-500"> {/* Reduced gap */}
+             <span className="flex items-center gap-1.5">
+               <Clock className="w-3 h-3 text-blue-500/70" /> 
+               Self-Paced
+             </span>
+             <span className="flex items-center gap-1.5">
+               <Star className="w-3 h-3 text-yellow-500/70" /> 
+               High Impact
+             </span>
           </div>
-
-          <ArrowRight
-            className="w-3 h-3 text-slate-600
-                       group-hover:text-blue-500
-                       group-hover:translate-x-1
-                       transition-all"
-          />
+          
+          <ArrowRight className="w-3.5 h-3.5 text-slate-700 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
         </div>
       </div>
+
+      {/* Decorative Border Glow */}
+      <div className="absolute inset-0 border border-blue-500/0 group-hover:border-blue-500/20 rounded-xl pointer-events-none transition-all" />
     </Card>
   );
 }

@@ -30,22 +30,60 @@ export default function InterviewPage({ searchParams }: { searchParams: Promise<
     init();
   }, [jobId]);
 
-  const handleMicToggle = () => {
-    const recognition = new (window as any).webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
+const handleMicToggle = () => {
+  if (!('webkitSpeechRecognition' in window)) return;
 
-    if (!isListening) {
-      recognition.start();
-      setIsListening(true);
-      recognition.onresult = (event: any) => {
-        setTranscript(event.results[event.resultIndex][0].transcript);
-      };
-    } else {
-      recognition.stop();
+  const recognition = new (window as any).webkitSpeechRecognition();
+  
+  // CRITICAL CONFIG
+  recognition.continuous = true; // Keep listening even after pauses
+  recognition.interimResults = true; 
+  recognition.lang = 'en-IN'; // Set to Indian English for better local accent parsing
+
+  if (!isListening) {
+    setIsListening(true);
+    recognition.start();
+
+    recognition.onresult = (event: any) => {
+      // Logic to grab the latest transcript
+      let finalTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        }
+      }
+      if (finalTranscript) {
+        console.log("FORGE_DEBUG: Final Sentence:", finalTranscript);
+        setTranscript((prev) => prev + " " + finalTranscript);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("FORGE_DEBUG: Error:", event.error);
+      
+      if (event.error === 'no-speech') {
+        // Instead of giving up, we let the user know we're still waiting
+        toast.warning("Listening... please speak clearly.", { duration: 2000 });
+        // Don't set isListening to false here so they can try again
+      }
+      
+      if (event.error === 'audio-capture') {
+        toast.error("No microphone found. Check system settings.");
+        setIsListening(false);
+      }
+    };
+
+    recognition.onend = () => {
+      console.log("FORGE_DEBUG: Session ended.");
+      // In an interview, we only want to stop if the user clicks 'Stop'
+      // but we'll reset state here to be safe.
       setIsListening(false);
-    }
-  };
+    };
+  } else {
+    recognition.stop();
+    setIsListening(false);
+  }
+};
 
   const handleSubmit = async () => {
     setIsEvaluating(true);

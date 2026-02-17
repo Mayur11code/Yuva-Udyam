@@ -10,7 +10,7 @@ const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 export async function parseJobPDF(
   base64Data: string,
   retryCount = 0
-): Promise<{ jobId: string; data: any } | null> {
+): Promise<{ data: any } | null> {
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
@@ -73,21 +73,20 @@ Return ONLY raw JSON. No markdown.
       return null;
     }
 
-    // ✅ Save to DB
-    const savedJob = await db.job.create({
-      data: {
-        role: parsedData.job_role,
-        organization: parsedData.organization,
-        salary: parsedData.salary,
-        location: parsedData.location || "Remote",
-        deadline: parsedData.deadline,
-        skills: parsedData.skills_required,
+    // // ✅ Save to DB
+    // const savedJob = await db.job.create({
+    //   data: {
+    //     role: parsedData.job_role,
+    //     organization: parsedData.organization,
+    //     salary: parsedData.salary,
+    //     location: parsedData.location || "Remote",
+    //     deadline: parsedData.deadline,
+    //     skills: parsedData.skills_required,
         
-      },
-    });
+    //   },
+    // });
 
     return {
-      jobId: savedJob.id,
       data: parsedData,
     };
 

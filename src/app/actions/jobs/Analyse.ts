@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 // --- ACTION 1: RESUME PERSISTENCE ---
 export async function uploadAndStoreResume(userId: string, base64Resume: string) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Use 1.5 Flash for stability
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); // Use 1.5 Flash for stability
 
     const prompt = `Extract all professional skills and a summary of experience from this resume. 
                     Return JSON: { "skills": ["skill1", "skill2"], "summary": "string" }`;
@@ -46,7 +46,7 @@ export async function uploadAndStoreResume(userId: string, base64Resume: string)
 export async function discoverUnlistedJob(pdfBase64: string) {
   try {
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       generationConfig: { responseMimeType: "application/json" }
     });
 

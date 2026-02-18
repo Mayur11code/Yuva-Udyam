@@ -31,6 +31,7 @@ export async function startAIInterview(userId: string, jobId: string) {
       Ask ONE deep, technical, and challenging behavioral or situational question to test their competence in that specific gap.
 
       Return ONLY the question text.Don't Ask TOO long or TOO short questions. Make it engaging and relevant to the job role.
+      Grill the candidate on real-world scenarios that test their problem-solving, adaptability, and depth of knowledge in the identified gap area.
     `;
 
     const result = await model.generateContent(prompt);

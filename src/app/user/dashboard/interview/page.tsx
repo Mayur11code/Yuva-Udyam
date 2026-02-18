@@ -13,6 +13,8 @@ export default function InterviewPage({ searchParams }: { searchParams: Promise<
   const resolvedParams = use(searchParams);
   const jobId = resolvedParams.jobId;
 
+
+  
   const [question, setQuestion] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -157,7 +159,7 @@ const handleMicToggle = () => {
               </div>
             </div>
             
-            <Button className="w-full h-12 bg-slate-800 hover:bg-slate-700 font-bold" onClick={() => window.location.href='/dashboard'}>
+            <Button className="w-full h-12 bg-slate-800 hover:bg-slate-700 font-bold" onClick={() => window.location.href='/user/dashboard'}>
               Return to Dashboard
             </Button>
           </Card>

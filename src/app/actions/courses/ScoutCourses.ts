@@ -54,7 +54,8 @@ export async function scoutCourses(userId: string) {
 
     const prompt = `
       The user has these skills: ${skills.join(", ")}.
-      Find 4 high-quality, free learning resources (official docs)
+      Find 4 high-quality, free learning resources (official docs or NPTEL courses) that would help them bridge gaps into advanced SaaS architecture.
+      Focus on courses that are beginner-friendly but also have pathways to advanced topics, ensuring they can grow into a 'Forge' architect role.
       that would help them bridge gaps into advanced SaaS architecture.
 
       Return JSON:

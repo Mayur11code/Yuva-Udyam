@@ -43,7 +43,6 @@ const cardNavItems = [
   },
 ];
 
-// ─── Card Nav Dropdown ────────────────────────────────────────────────────────
 function CardNavDropdown({ onClose }: { onClose: () => void }) {
   return (
     <motion.div
@@ -118,7 +117,6 @@ function CardNavDropdown({ onClose }: { onClose: () => void }) {
   );
 }
 
-// FIXED HERE 👇
 function NavContent({
   navItems,
   cardNavOpen,
@@ -133,6 +131,136 @@ function NavContent({
   setCardNavOpen: (v: boolean) => void;
 }) {
   return (
-    <></>
+    <>
+      <button
+        onClick={() => setCardNavOpen(!cardNavOpen)}
+        className={cn(
+          "relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors",
+          cardNavOpen
+            ? "bg-white/10 text-white"
+            : "text-neutral-300 hover:bg-white/10 hover:text-white"
+        )}
+      >
+        <svg
+          className={cn(
+            "w-3.5 h-3.5 transition-transform duration-200",
+            cardNavOpen ? "rotate-45" : "rotate-0"
+          )}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <span className="hidden sm:block">Explore</span>
+      </button>
+
+      <div className="h-5 w-px bg-white/10" />
+
+      <div className="flex items-center gap-1">
+        {navItems.map((navItem, idx) => (
+          <a
+            key={`link-${idx}`}
+            href={navItem.link}
+            className="relative flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <span className="block sm:hidden">{navItem.icon}</span>
+            <span className="hidden sm:block">{navItem.name}</span>
+          </a>
+        ))}
+      </div>
+
+      <div className="h-5 w-px bg-white/10" />
+
+      <button className="relative rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition-all hover:bg-neutral-200">
+        <span>Login</span>
+      </button>
+
+      <AnimatePresence>
+        {cardNavOpen && (
+          <CardNavDropdown onClose={() => setCardNavOpen(false)} />
+        )}
+      </AnimatePresence>
+    </>
   );
 }
+
+export const FloatingNav = ({
+  navItems,
+  className,
+}: {
+  navItems: {
+    name: string;
+    link: string;
+    icon?: React.ReactNode;
+  }[];
+  className?: string;
+}) => {
+  const { scrollY } = useScroll();
+  const [isFloating, setIsFloating] = useState(false);
+  const [floatVisible, setFloatVisible] = useState(false);
+  const [cardNavOpen, setCardNavOpen] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useMotionValueEvent(scrollY, "change", (current) => {
+    const HERO_THRESHOLD = 80;
+    const direction = current - lastScrollY.current;
+    lastScrollY.current = current;
+
+    if (current < HERO_THRESHOLD) {
+      setIsFloating(false);
+      setFloatVisible(false);
+    } else {
+      setIsFloating(true);
+      setFloatVisible(direction < 0);
+    }
+  });
+
+  return (
+    <>
+      <motion.header
+        animate={{ opacity: isFloating ? 0 : 1, y: isFloating ? -20 : 0 }}
+        transition={{ duration: 0.3 }}
+        className={cn(
+          "fixed top-0 inset-x-0 z-[5000] flex items-center justify-between px-8 py-4",
+          "border-b border-white/5 bg-black/60 backdrop-blur-md",
+          isFloating ? "pointer-events-none" : "pointer-events-auto",
+          className
+        )}
+      >
+        <span className="text-white font-black text-lg tracking-widest uppercase">
+          Yuva Udyam
+        </span>
+
+        <div className="relative flex items-center gap-2">
+          <NavContent
+            navItems={navItems}
+            cardNavOpen={cardNavOpen}
+            setCardNavOpen={setCardNavOpen}
+          />
+        </div>
+      </motion.header>
+
+      <AnimatePresence>
+        {isFloating && floatVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-10 inset-x-0 mx-auto z-[5000] flex justify-center pointer-events-auto"
+          >
+            <div className="relative flex items-center justify-center gap-2 rounded-full border border-white/10 bg-black/80 px-2 py-1.5 shadow-lg shadow-black/30 backdrop-blur-md">
+              <NavContent
+                navItems={navItems}
+                cardNavOpen={cardNavOpen}
+                setCardNavOpen={setCardNavOpen}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};

@@ -50,8 +50,8 @@ export function BentoGrid() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16 px-8">
           <p className="text-cyan-400 font-mono text-sm uppercase tracking-[0.25em] mb-3">+ Everything in one place</p>
-          <h2 className="text-white text-5xl md:text-6xl font-black tracking-tighter uppercase">
-            Built for <span className="text-cyan-400">Your Success</span>
+          <h2 className="font-serif text-white text-5xl md:text-6xl font-black tracking-tight">
+            Built for <span className="text-cyan-400 italic">Your Success</span>
           </h2>
           <p className="text-neutral-400 font-mono text-base mt-4 max-w-2xl mx-auto">
             From resume to offer letter — Yuva Udyam has every tool you need to land your dream role.
@@ -101,9 +101,25 @@ const SkeletonResume = () => {
     <div className="relative flex h-full gap-6 px-2 py-6">
       <div className="mx-auto w-full rounded-xl bg-zinc-900 border border-neutral-800 p-6">
         <div className="flex items-center gap-6 mb-6">
-          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-full border-4 border-cyan-500">
-            <span className="text-2xl font-black text-white">87</span>
-            <span className="absolute -bottom-1 text-[10px] text-cyan-400 font-mono">SCORE</span>
+          {/* SVG ring score */}
+          <div className="shrink-0 flex flex-col items-center gap-1">
+            <div className="relative w-20 h-20">
+              <svg width="80" height="80" viewBox="0 0 80 80" className="-rotate-90">
+                <circle cx="40" cy="40" r="34" fill="#09090b" stroke="#27272a" strokeWidth="6" />
+                <circle
+                  cx="40" cy="40" r="34"
+                  fill="none"
+                  stroke="#22d3ee"
+                  strokeWidth="6"
+                  strokeDasharray={`${2 * Math.PI * 34 * 0.87} ${2 * Math.PI * 34}`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-2xl font-black" style={{ color: "#fff" }}>87</span>
+              </div>
+            </div>
+            <span className="text-[9px] text-cyan-400 font-mono tracking-widest uppercase">Score</span>
           </div>
           <div>
             <p className="text-white font-bold text-lg">Frontend Developer</p>

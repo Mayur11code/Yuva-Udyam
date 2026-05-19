@@ -1,90 +1,73 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import { getUserApplications } from '@/src/app/actions/dashboarduser/fetchApplication';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Clock, CheckCircle2, AlertCircle, ChevronRight, Loader2 } from 'lucide-react';
+import React from 'react';
+import { Clock, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const SAMPLE_APPS = [
+  { id: "app_1", status: "In Progress", job: { role: "Data Analyst (IT Division)", organization: "NIC" }, interview: { score: 78 } },
+  { id: "app_2", status: "Selected", job: { role: "Junior Research Fellow", organization: "ISRO" }, interview: { score: 91 } },
+  { id: "app_3", status: "In Progress", job: { role: "Assistant Engineer", organization: "PWD Maharashtra" }, interview: null },
+  { id: "app_4", status: "Withdrawn", job: { role: "Pharmacist Grade A", organization: "AIIMS Delhi" }, interview: null },
+];
+
+const statusConfig: Record<string, { icon: React.ElementType; color: string; bg: string; border: string }> = {
+  Selected:    { icon: CheckCircle2, color: "text-emerald-400", bg: "bg-emerald-500/8",  border: "border-emerald-500/15" },
+  "In Progress": { icon: Clock,       color: "text-cyan-400",    bg: "bg-cyan-500/8",     border: "border-cyan-500/15" },
+  Withdrawn:   { icon: AlertCircle,  color: "text-rose-400",    bg: "bg-rose-500/8",     border: "border-rose-500/15" },
+};
 
 export function ActiveApplications({ userId }: { userId: string }) {
-  const [apps, setApps] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      const data = await getUserApplications(userId);
-      setApps(data);
-      setLoading(false);
-    }
-    load();
-  }, [userId]);
-
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin mx-auto text-blue-500 mt-10" />;
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-white">My Tracking List</h2>
-        <Badge variant="outline" className="text-slate-500 border-slate-800">
-          {apps.length} Applications
-        </Badge>
+        <h2 className="text-white font-bold text-lg">My Applications</h2>
+        <span className="text-[10px] font-mono text-white/20 bg-white/4 border border-white/6 px-2.5 py-1 rounded-full">
+          {SAMPLE_APPS.length} tracked
+        </span>
       </div>
 
-      <div className="grid gap-3">
-        {apps.length === 0 ? (
-          <p className="text-sm text-slate-600 italic py-10 text-center border border-dashed border-slate-800 rounded-xl">
-            You haven't applied to any jobs yet. Browse the National Feed to start.
-          </p>
-        ) : (
-          apps.map((app) => (
-            <Card key={app.id} className="bg-[#151921] border-slate-800 p-4 hover:border-slate-700 transition-all group">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="p-2 bg-slate-900 rounded-lg border border-slate-800">
-                    {app.status === 'Selected' ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                    ) : app.status === 'Rejected' ? (
-                      <AlertCircle className="w-5 h-5 text-rose-500" />
-                    ) : (
-                      <Clock className="w-5 h-5 text-blue-500" />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-200 group-hover:text-blue-400 transition-colors">
-                      {app.job.role}
-                    </h4>
-                    <p className="text-xs text-slate-500">{app.job.organization}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-6">
-                  {/* Show AI Score if Interview is complete */}
-                  {app.interview && (
-                    <div className="text-right hidden sm:block">
-                      <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">AI Score</p>
-                      <p className={`text-sm font-mono font-bold ${app.interview.score > 70 ? 'text-emerald-400' : 'text-yellow-400'}`}>
-                        {app.interview.score}%
-                      </p>
-                    </div>
-                  )}
-                  
-                  <Badge className={`
-                    ${app.status === 'Selected' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 
-                      app.status === 'Rejected' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : 
-                      'bg-blue-500/10 text-blue-400 border-blue-500/20'}
-                  `}>
-                    {app.status}
-                  </Badge>
-                  
-                  <Button variant="ghost" size="icon" className="text-slate-600 group-hover:text-white">
-                    <ChevronRight className="w-4 h-4" />
-                  </Button>
-                </div>
+      <div className="space-y-2">
+        {SAMPLE_APPS.map((app) => {
+          const cfg = statusConfig[app.status] ?? statusConfig["In Progress"];
+          const Icon = cfg.icon;
+          return (
+            <div
+              key={app.id}
+              className="flex items-center gap-4 p-4 rounded-xl border border-white/6 bg-black/30 hover:bg-white/2 hover:border-white/10 transition-all group cursor-pointer backdrop-blur-sm"
+            >
+              {/* Status icon */}
+              <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border", cfg.bg, cfg.border)}>
+                <Icon className={cn("w-4 h-4", cfg.color)} />
               </div>
-            </Card>
-          ))
-        )}
+
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-semibold text-sm truncate group-hover:text-cyan-400 transition-colors">
+                  {app.job.role}
+                </p>
+                <p className="text-white/30 text-xs font-mono mt-0.5">{app.job.organization}</p>
+              </div>
+
+              {/* Score */}
+              {app.interview && (
+                <div className="text-right hidden sm:block shrink-0">
+                  <p className="text-[9px] font-mono text-white/20 uppercase tracking-widest">AI Score</p>
+                  <p className={cn("text-sm font-black font-mono", app.interview.score >= 80 ? "text-emerald-400" : "text-yellow-400")}>
+                    {app.interview.score}%
+                  </p>
+                </div>
+              )}
+
+              {/* Status badge */}
+              <span className={cn("text-[10px] font-mono px-2.5 py-1 rounded-full border shrink-0", cfg.color, cfg.bg, cfg.border)}>
+                {app.status}
+              </span>
+
+              <ChevronRight className="w-3.5 h-3.5 text-white/15 group-hover:text-white/40 transition-colors shrink-0" />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

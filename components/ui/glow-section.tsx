@@ -79,8 +79,8 @@ export function GlowSection() {
           <p className="text-cyan-400 font-mono text-base uppercase tracking-[0.25em] mb-3">
             + Platform Features
           </p>
-          <h2 className="text-white text-5xl md:text-6xl font-black tracking-tighter uppercase">
-            Built for <span className="text-cyan-400">Both Sides</span>
+          <h2 className="font-serif text-white text-5xl md:text-6xl font-black tracking-tight">
+            Built for <span className="text-cyan-400 italic">Both Sides</span>
           </h2>
         </div>
 

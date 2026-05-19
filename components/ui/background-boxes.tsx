@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -46,23 +47,23 @@ export function BoxesCTA() {
       <div className="pointer-events-none absolute inset-0 z-10 bg-slate-900 [mask-image:radial-gradient(ellipse_at_center,transparent_30%,black)]" />
       <div className="relative z-20 flex flex-col items-center text-center px-6 gap-6">
         <p className="text-cyan-400 font-mono text-lg uppercase tracking-[0.25em]">+ Start Today. It's Free.</p>
-        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
+        <h2 className="font-serif text-5xl md:text-7xl font-black tracking-tight text-white leading-none">
           Your Dream Job<br />
-          <span className="text-cyan-400">Is One Upload Away.</span>
+          <span className="text-cyan-400 italic">Is One Upload Away.</span>
         </h2>
         <p className="text-neutral-400 font-mono text-base max-w-xl">
           Upload your resume. Know where you stand. Get your roadmap. Land the role.
         </p>
         <div className="flex flex-wrap gap-4 justify-center mt-2">
-          <button className="flex items-center gap-2 bg-cyan-500 text-black font-bold text-sm px-8 py-4 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-95 uppercase tracking-widest">
+          <Link href="/signup" className="flex items-center gap-2 bg-cyan-500 text-black font-bold text-sm px-8 py-4 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-95 uppercase tracking-widest">
             Get Started Free
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </button>
-          <button className="border border-white/20 text-white text-sm px-8 py-4 rounded-full hover:border-white/50 hover:bg-white/5 transition-all duration-200 uppercase tracking-widest font-mono">
+          </Link>
+          <a href="#features" className="border border-white/20 text-white text-sm px-8 py-4 rounded-full hover:border-white/50 hover:bg-white/5 transition-all duration-200 uppercase tracking-widest font-mono">
             Learn More
-          </button>
+          </a>
         </div>
         <p className="text-neutral-400 font-mono text-base uppercase tracking-widest mt-4">
           Empowering India's Youth. One Career at a Time.

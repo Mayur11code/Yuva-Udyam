@@ -8,7 +8,7 @@ export function LoadingScreen() {
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    const timer = setTimeout(() => setVisible(false), 2500);
+    const timer = setTimeout(() => setVisible(false), 800);
     return () => {
       clearTimeout(timer);
       document.body.style.overflow = "";
@@ -28,7 +28,7 @@ export function LoadingScreen() {
           key="loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           style={{
             position: "fixed",
             inset: 0,

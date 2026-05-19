@@ -2,6 +2,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+}
+
 /* 1. Theme Configuration */
 :root {
   --accent-cyan: #38bdf8;

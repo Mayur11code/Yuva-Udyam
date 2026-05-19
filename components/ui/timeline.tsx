@@ -24,8 +24,8 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     <div className="w-full bg-black font-sans md:px-10" ref={containerRef}>
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
         <p className="text-cyan-400 font-mono text-xl uppercase tracking-[0.25em] mb-3">+ Our Journey</p>
-        <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-white max-w-4xl">
-          Building <span className="text-cyan-400">Yuva Udyam</span>
+        <h2 className="font-serif text-4xl md:text-6xl font-black tracking-tight text-white max-w-4xl">
+          Building <span className="text-cyan-400 italic">Yuva Udyam</span>
         </h2>
         <p className="text-neutral-400 font-mono text-base mt-4 max-w-lg">
           From a college idea to India's career intelligence platform — here's how we got here.
@@ -79,7 +79,7 @@ export const yuvaUdyamTimelineData: TimelineEntry[] = [
           The idea is born. A group of students frustrated with generic job portals that never told you <em>why</em> you weren't getting callbacks.
         </p>
         <p className="text-neutral-500 font-mono text-sm">
-          Initial research phase — 200+ student interviews conducted across India. Problem validated: 87% of students didn't know what skills they were missing for their target jobs.
+          Initial research phase: 200+ student interviews conducted across India. Problem validated: 87% of students didn't know what skills they were missing for their target jobs.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <StatCard value="200+" label="Students Interviewed" />
@@ -97,7 +97,7 @@ export const yuvaUdyamTimelineData: TimelineEntry[] = [
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-neutral-300 text-base md:text-lg font-medium leading-relaxed">
-          Core AI engine built — resume scoring, skill gap analysis, and job matching algorithms trained on thousands of Indian job postings and resumes.
+          Core AI engine built: resume scoring, skill gap analysis, and job matching algorithms trained on thousands of Indian job postings and resumes.
         </p>
         <p className="text-neutral-500 font-mono text-sm">
           Integrated with SWAYAM & NPTEL for course recommendations. WhatsApp & Google Meet alerts built. First 100 beta users onboarded from 3 colleges.
@@ -119,7 +119,7 @@ export const yuvaUdyamTimelineData: TimelineEntry[] = [
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-neutral-300 text-base md:text-lg font-medium leading-relaxed">
-          Yuva Udyam officially launches — India's first AI-powered career intelligence platform connecting students, job seekers, and organisations in one unified ecosystem.
+          Yuva Udyam officially launches: India's first AI-powered career intelligence platform connecting students, job seekers, and organisations in one unified ecosystem.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <StatCard value="10K+" label="Students Onboarded" />
@@ -140,7 +140,7 @@ export const yuvaUdyamTimelineData: TimelineEntry[] = [
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-neutral-300 text-base md:text-lg font-medium leading-relaxed">
-          Our goal — make every young Indian job seeker unstoppable. Not just a job portal, but a lifelong career co-pilot powered by AI.
+          Our goal: make every young Indian job seeker unstoppable. Not just a job portal, but a lifelong career co-pilot powered by AI.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="rounded-xl bg-zinc-900 border border-cyan-500/20 p-5">

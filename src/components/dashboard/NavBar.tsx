@@ -1,12 +1,10 @@
 'use client'
 
 import React from 'react';
-import { Bell, User, Search, Zap } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-
+import { Bell, User, Search } from 'lucide-react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { name: "Jobs", href: "/user/job" },
@@ -14,81 +12,83 @@ const navItems = [
   { name: "Courses", href: "/user/courses" },
 ];
 
-export default function NavbarLinks() {
+export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <div className="hidden md:flex items-center gap-1">
-      {navItems.map((item) => {
-        const isActive = pathname === item.href;
-
-        return (
-          <Link
-            key={item.name}
-            href={item.href}
-            className={`text-sm font-bold px-4 py-2 rounded-lg transition-colors ${
-              isActive
-                ? "text-blue-500 bg-blue-500/10"
-                : "text-slate-500 hover:text-white"
-            }`}
-          >
-            {item.name}
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
-
-export function Navbar() {
-  return (
-    <div className="w-full pt-6 px-6">
-      <nav className="max-w-[1400px] mx-auto h-16 bg-[#151921]/80 backdrop-blur-md border border-slate-800 rounded-2xl flex items-center justify-between px-6 shadow-2xl">
-        {/* Brand Section */}
+    <div className="w-full pt-5 px-6">
+      <nav className="max-w-[1400px] mx-auto h-14 bg-black/70 backdrop-blur-md border border-white/6 rounded-2xl flex items-center justify-between px-5 shadow-xl shadow-black/40">
+        {/* Brand */}
         <div className="flex items-center gap-8">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40">
-              <Zap className="w-5 h-5 text-white fill-white" />
-            </div>
-            <span className="font-black text-xl tracking-tighter text-white uppercase">
-              Yuva <span className="text-blue-500">Udyam</span>
-            </span>
-          </div>
+          <Link href="/" className="font-serif font-black text-xl tracking-tight text-white hover:opacity-75 transition-opacity">
+            Yuva <span className="text-cyan-400 italic">Udyam</span>
+          </Link>
 
-          {/* Nav Links */}
-            <NavbarLinks />
+          <div className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors",
+                    isActive ? "text-cyan-400 bg-cyan-500/10" : "text-white/35 hover:text-white/70"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Action Section */}
-        <div className="flex items-center gap-4">
-          <div className="relative hidden lg:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <Input 
-              placeholder="Search anything..." 
-              className="bg-slate-950/50 border-slate-800 pl-10 w-64 h-9 text-xs focus:ring-1 focus:ring-blue-500/50 rounded-lg" 
+        {/* Right */}
+        <div className="flex items-center gap-3">
+          <div className="relative hidden lg:flex items-center">
+            <Search className="absolute left-3 w-3.5 h-3.5 text-white/20" />
+            <input
+              placeholder="Search anything..."
+              className="bg-white/3 border border-white/6 rounded-lg pl-9 pr-4 h-8 w-56 text-xs text-white placeholder:text-white/20 outline-none focus:border-cyan-500/30 transition-colors"
             />
           </div>
-          
-          <div className="h-8 w-px bg-slate-800 mx-2" />
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-white">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 rounded-full border-2 border-[#151921]" />
-            </Button>
-            
-            <div className="flex items-center gap-3 pl-2 cursor-pointer group">
-              <div className="text-right hidden sm:block">
-                <p className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors">Raj Singh</p>
-                <p className="text-[10px] text-slate-500 font-mono">ID: 4402-91</p>
-              </div>
-              <div className="w-9 h-9 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl border border-slate-700 flex items-center justify-center shadow-inner group-hover:border-blue-500/50 transition-all">
-                <User className="w-5 h-5 text-slate-300" />
-              </div>
+          <div className="h-5 w-px bg-white/6" />
+
+          <button className="relative w-8 h-8 flex items-center justify-center text-white/30 hover:text-white/60 transition-colors">
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-cyan-400 rounded-full" />
+          </button>
+
+          <div className="flex items-center gap-2.5 cursor-pointer group">
+            <div className="text-right hidden sm:block">
+              <p className="text-xs font-semibold text-white/70 group-hover:text-white transition-colors leading-none">Raj Singh</p>
+              <p className="text-[9px] text-white/20 font-mono mt-0.5">ID: 4402-91</p>
+            </div>
+            <div className="w-8 h-8 rounded-lg border border-white/8 bg-white/4 flex items-center justify-center group-hover:border-cyan-500/30 transition-all">
+              <User className="w-4 h-4 text-white/40" />
             </div>
           </div>
         </div>
       </nav>
+    </div>
+  );
+}
+
+export default function NavbarLinks() {
+  const pathname = usePathname();
+  return (
+    <div className="hidden md:flex items-center gap-1">
+      {navItems.map((item) => {
+        const isActive = pathname === item.href;
+        return (
+          <Link key={item.name} href={item.href}
+            className={cn("text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors",
+              isActive ? "text-cyan-400 bg-cyan-500/10" : "text-white/35 hover:text-white/70"
+            )}
+          >{item.name}</Link>
+        );
+      })}
     </div>
   );
 }

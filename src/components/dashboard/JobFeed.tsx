@@ -1,143 +1,88 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import { Loader2, ExternalLink, Mic2 } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import React, { useState } from 'react';
+import { ExternalLink, Mic2, MapPin, IndianRupee } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { getAllJobs } from '@/src/app/actions/loadJobs';
-import { generateCareerRoadmap } from '@/src/app/actions/jobs/GapAnalysis';
-import { RoadmapModal } from './RoadMapModal'; // IMPORT THE MODAL
 import { toast } from "sonner";
-import { applyToJob } from '@/src/app/actions/jobs/Apply';
-import { JobDetailsModal } from './JobDetailsModal';
+import { cn } from '@/lib/utils';
+
+const SAMPLE_JOBS = [
+  { id: "job_001", role: "Scientist 'B' (Electronics)", organization: "DRDO", salary: "₹56,100 – ₹1,77,500", location: "New Delhi", deadline: "Mar 30, 2026", skills: ["Electronics", "Signal Processing", "MATLAB"] },
+  { id: "job_002", role: "Junior Research Fellow", organization: "ISRO", salary: "₹31,000/month", location: "Bengaluru", deadline: "Apr 15, 2026", skills: ["Python", "Data Analysis", "Space Technology"] },
+  { id: "job_003", role: "Data Analyst (IT Division)", organization: "NIC", salary: "₹44,900 – ₹1,42,400", location: "Remote", deadline: "Apr 5, 2026", skills: ["SQL", "Power BI", "Python"] },
+  { id: "job_004", role: "Assistant Professor (CS)", organization: "IIT Roorkee", salary: "₹57,700 – ₹1,82,400", location: "Roorkee, UK", deadline: "Apr 20, 2026", skills: ["Machine Learning", "Research", "C++"] },
+  { id: "job_005", role: "Civil Engineer (Grade II)", organization: "NHAI", salary: "₹40,000 – ₹1,40,000", location: "Multiple Cities", deadline: "Mar 25, 2026", skills: ["AutoCAD", "Structural Analysis", "Project Management"] },
+  { id: "job_006", role: "Pharmacist (Grade A)", organization: "AIIMS Delhi", salary: "₹35,400 – ₹1,12,400", location: "New Delhi", deadline: "May 1, 2026", skills: ["Pharmacology", "Drug Dispensing", "Clinical Pharmacy"] },
+];
 
 export function JobFeed() {
   const router = useRouter();
-  const [jobs, setJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedRoadmap, setSelectedRoadmap] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [selectedJob, setSelectedJob] = useState<any>(null);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-
-  const handleOpenDetails = (job: any) => {
-    setSelectedJob(job);
-    setIsDetailsOpen(true);
-  };
-
-
-
-  const handleJobClick = async (jobId: string) => {
-    const toastId = toast.loading("Analyzing skill gaps with Gemini...");
-    try {
-      // Using your hardcoded forge user ID to pull stored resume data
-      console.log("Generating roadmap for user_2026_forge and jobId:", jobId);
-      const roadmapData = await generateCareerRoadmap("user_2026_forge", jobId);
-      console.log("Roadmap Data:", roadmapData);
-      setSelectedRoadmap(roadmapData);
-      setIsModalOpen(true);
-      toast.dismiss(toastId);
-    } catch (error) {
-
-      toast.error("Could not generate roadmap. Ensure your resume is uploaded.");
-      toast.dismiss(toastId);
-      console.log("Error generating roadmap:", error);
-    }
-  };
-
-  useEffect(() => {
-    async function fetchJobs() {
-      try {
-        const data = await getAllJobs();
-        setJobs(data);
-      } catch (error) {
-        toast.error("Failed to sync with National Database");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchJobs();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
-        <p className="text-xs font-mono text-slate-500 uppercase tracking-widest">Querying National Grid...</p>
-      </div>
-    );
-  }
+  const [expandedJob, setExpandedJob] = useState<string | null>(null);
 
   return (
-    <>
-      <Card className="bg-[#151921] border-slate-800 shadow-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-950/50 text-slate-500 font-bold uppercase tracking-tighter border-b border-slate-800">
-              <tr>
-                <th className="px-6 py-4">Position</th>
-                <th className="px-6 py-4">Organization</th>
-                <th className="px-6 py-4">Salary</th>
-                <th className="px-6 py-4 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/50">
-              {jobs.map((job) => (
-                <tr
-                  key={job.id}
-                  onClick={() => handleOpenDetails(job)} // Trigger the new Modal
-                  className="hover:bg-blue-500/5 transition-colors group cursor-pointer"
-                >
-                  <td className="px-6 py-4">
-                    <div className="font-bold text-slate-200 group-hover:text-blue-400 transition-colors">{job.role}</div>
-                    <div className="text-[10px] text-slate-600 font-mono mt-0.5">REF: {job.id.slice(0, 8).toUpperCase()}</div>
-                  </td>
-                  <td className="px-6 py-4 text-slate-400">{job.organization}</td>
-                  <td className="px-6 py-4"><span className="text-emerald-400 font-mono font-bold">{job.salary}</span></td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-500 hover:text-white">
-                        <ExternalLink className="w-4 h-4" />
-                        <Button
-                          size="sm"
-                          className="bg-blue-600 hover:bg-blue-500 text-white h-8 px-3 text-xs font-bold flex gap-2"
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevents the Roadmap modal from opening
-                            toast.info(`Launching Interview for ${job.role}`);
-
-                            // NEW: Navigate to the interview page with the jobId parameter
-                            router.push(`./dashboard/interview?jobId=${job.id}`);
-                          }}>
-                          <Mic2 className="w-3.5 h-3.5" /> Practice
-                        </Button>
-                      </Button>
+    <div className="rounded-2xl border border-white/6 overflow-hidden bg-black/40 backdrop-blur-sm">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-b border-white/6">
+              <th className="px-6 py-3.5 text-[10px] font-mono text-white/25 uppercase tracking-[0.18em]">Position</th>
+              <th className="px-6 py-3.5 text-[10px] font-mono text-white/25 uppercase tracking-[0.18em]">Organisation</th>
+              <th className="px-6 py-3.5 text-[10px] font-mono text-white/25 uppercase tracking-[0.18em]">Pay Scale</th>
+              <th className="px-6 py-3.5 text-[10px] font-mono text-white/25 uppercase tracking-[0.18em]">Deadline</th>
+              <th className="px-6 py-3.5 text-[10px] font-mono text-white/25 uppercase tracking-[0.18em] text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SAMPLE_JOBS.map((job) => (
+              <tr
+                key={job.id}
+                className="border-b border-white/4 hover:bg-white/2 transition-colors group cursor-pointer"
+                onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)}
+              >
+                <td className="px-6 py-4">
+                  <p className="font-semibold text-white group-hover:text-cyan-400 transition-colors text-sm">{job.role}</p>
+                  <p className="text-[10px] font-mono text-white/20 mt-0.5">
+                    <MapPin className="w-2.5 h-2.5 inline mr-1" />{job.location}
+                  </p>
+                  {expandedJob === job.id && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {job.skills.map(s => (
+                        <span key={s} className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/8 text-cyan-400 border border-cyan-500/15">{s}</span>
+                      ))}
                     </div>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </tbody>
-          </table>
-        </div>
-      </Card>
-      <JobDetailsModal
-        job={selectedJob}
-        isOpen={isDetailsOpen}
-        onClose={() => setIsDetailsOpen(false)}
-        userId="user_2026_forge"
-      />
-      {/* MODAL COMPONENT */}
-      <RoadmapModal
-        data={selectedRoadmap}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </>
+                  )}
+                </td>
+                <td className="px-6 py-4 text-white/40 text-sm">{job.organization}</td>
+                <td className="px-6 py-4">
+                  <span className="font-mono text-emerald-400 text-xs">{job.salary}</span>
+                </td>
+                <td className="px-6 py-4 text-white/25 font-mono text-xs">{job.deadline}</td>
+                <td className="px-6 py-4 text-right">
+                  <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); router.push(`./dashboard/interview?jobId=${job.id}`); }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-mono hover:bg-cyan-500/20 transition-colors"
+                    >
+                      <Mic2 className="w-3 h-3" /> Practice
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toast.success(`Applying to ${job.role}...`); }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-white/40 border border-white/8 text-xs font-mono hover:text-white/70 transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" /> Apply
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="px-6 py-3 border-t border-white/4 flex items-center justify-between">
+        <span className="text-[10px] font-mono text-white/15">{SAMPLE_JOBS.length} active postings</span>
+        <span className="text-[10px] font-mono text-white/15">Last synced: just now</span>
+      </div>
+    </div>
   );
 }

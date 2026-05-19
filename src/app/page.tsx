@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { GlobeDisplay } from "@/components/ui/globe-wrapper";
 import { JheyGrid } from "@/components/ui/jhey-grid";
 import { GlowSection } from "@/components/ui/glow-section";
@@ -100,10 +101,10 @@ export default function LandingPage() {
                 </span>
               </div>
 
-              <h1 className="text-5xl md:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+              <h1 className="font-serif text-5xl md:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
                 <span className="text-white">Don't just apply.</span>
                 <br />
-                <span className="text-neutral-600">Know where</span>
+                <span className="text-cyan-400 italic">Know where</span>
                 <br />
                 <span className="text-white">you stand.</span>
               </h1>
@@ -118,23 +119,23 @@ export default function LandingPage() {
 
               <p className="text-sm text-neutral-400 leading-relaxed font-mono max-w-[420px]">
                 Upload your resume. Get scored. Find your skill gaps. Build a
-                roadmap. Land the job — with AI by your side.
+                roadmap. Land the job, with AI by your side.
               </p>
 
               <div className="flex flex-wrap gap-4 mt-2">
-                <button className="flex items-center gap-2 bg-cyan-500 text-black font-bold text-sm px-7 py-3.5 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-95 uppercase tracking-widest">
+                <Link href="/signup" className="flex items-center gap-2 bg-cyan-500 text-black font-bold text-sm px-7 py-3.5 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-95 uppercase tracking-widest">
                   Get Started Free
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                </button>
-                <button className="flex items-center gap-2 border border-white/20 text-white text-sm px-7 py-3.5 rounded-full hover:border-white/50 hover:bg-white/5 transition-all duration-200 uppercase tracking-widest font-mono">
+                </Link>
+                <Link href="/org/dashboard" className="flex items-center gap-2 border border-white/20 text-white text-sm px-7 py-3.5 rounded-full hover:border-white/50 hover:bg-white/5 transition-all duration-200 uppercase tracking-widest font-mono">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
                     <path d="M5 6h6M5 9h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                   I'm an Organisation
-                </button>
+                </Link>
               </div>
 
               <div className="flex gap-10 mt-4 pt-6 border-t border-white/10">
@@ -182,15 +183,15 @@ export default function LandingPage() {
             speedScale={1}
           />
           <div className="relative z-10 text-center px-6">
-            <h2 className="text-white text-4xl md:text-6xl font-black tracking-tighter uppercase">
-              Not Just a <span className="text-cyan-400">Job Portal</span>
+            <h2 className="font-serif text-white text-4xl md:text-6xl font-black tracking-tight">
+              Not Just a <span className="text-cyan-400 italic">Job Portal</span>
             </h2>
-            <p className="text-neutral-400 font-mono text-sm mt-4 uppercase tracking-widest max-w-xl mx-auto">
-              Yuva Udyam tells you what the job demands, where you stand, and exactly how to bridge the gap
+            <p className="text-neutral-400 text-base mt-5 max-w-lg mx-auto leading-relaxed">
+              Yuva Udyam tells you what the job demands, where you stand, and exactly how to bridge the gap.
             </p>
-            <button className="mt-8 px-8 py-3 rounded-full bg-cyan-500 text-black font-bold text-sm uppercase tracking-widest hover:bg-cyan-400 transition-colors">
+            <Link href="/signup" className="inline-block mt-8 px-8 py-3 rounded-full bg-cyan-500 text-black font-bold text-sm hover:bg-cyan-400 transition-colors tracking-wide">
               Get Started Free
-            </button>
+            </Link>
           </div>
         </section>
 
@@ -203,8 +204,8 @@ export default function LandingPage() {
         {/* RIPPLE TILES */}
         <section className="relative w-full h-[450px] overflow-hidden">
           <div className="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-            <h2 className="text-white text-4xl md:text-5xl font-black tracking-tighter uppercase">
-              Built for <span className="text-cyan-400">Everyone</span>
+            <h2 className="font-serif text-white text-4xl md:text-5xl font-black tracking-tight">
+              Built for <span className="text-cyan-400 italic">Everyone</span>
             </h2>
             <p className="text-neutral-400 font-mono text-sm mt-2 uppercase tracking-widest">
               Students, job seekers, and organisations — all in one platform
@@ -216,8 +217,8 @@ export default function LandingPage() {
         {/* SPOTLIGHT CARDS */}
         <section id="features" className="w-full py-24 px-6 bg-black">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-white text-4xl md:text-5xl font-black tracking-tighter uppercase text-center mb-16">
-              What Yuva Udyam <span className="text-cyan-400">Does</span>
+            <h2 className="font-serif text-white text-4xl md:text-5xl font-black tracking-tight text-center mb-16">
+              What Yuva Udyam <span className="text-cyan-400 italic">Does</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <CardSpotlight className="h-80" color="#0ea5e9">
@@ -291,7 +292,8 @@ export default function LandingPage() {
           />
           <div className="flex justify-center mt-12">
             <StarBorder
-              as="button"
+              as="a"
+              href="#contact"
               color="#38bdf8"
               speed="6s"
               className="text-white font-bold text-sm uppercase tracking-widest"
@@ -308,9 +310,9 @@ export default function LandingPage() {
               <p className="text-cyan-400 font-mono text-base uppercase tracking-[0.25em] mb-4">
                 + Opportunities for You
               </p>
-              <h2 className="text-white text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
+              <h2 className="font-serif text-white text-5xl md:text-7xl font-black tracking-tight leading-none">
                 Government{" "}
-                <Cover className="text-cyan-400 text-5xl md:text-7xl font-black tracking-tighter leading-none py-0">SCHEMES</Cover>
+                <Cover className="text-cyan-400 italic text-5xl md:text-7xl font-black tracking-tight leading-none py-0">Schemes</Cover>
               </h2>
               <p className="text-neutral-400 font-mono text-base mt-5 max-w-lg mx-auto">
                 Discover funding, mentorship & support programs built for India's young entrepreneurs.

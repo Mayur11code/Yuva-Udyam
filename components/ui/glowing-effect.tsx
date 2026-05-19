@@ -160,11 +160,6 @@ const GlowingEffect = memo(
               "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),transparent_0deg,#fff_calc(var(--spread)*0.5deg),#fff_calc(var(--spread)*1.5deg),transparent_calc(var(--spread)*2deg))]"
             )}
           />
-          {/* Optional: Add a second blurred layer for "strength" bloom */}
-          <div 
-            className="absolute inset-0 rounded-[inherit] blur-md opacity-[calc(var(--active)*0.5)] transition-opacity duration-500"
-            style={{ background: "var(--gradient)", backgroundAttachment: "fixed", maskImage: "conic-gradient(from_calc((var(--start)-var(--spread))*1deg), transparent 0deg, #fff, transparent calc(var(--spread)*2deg))" }}
-          />
         </div>
       </>
     );

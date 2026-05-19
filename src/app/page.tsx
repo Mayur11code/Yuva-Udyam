@@ -11,6 +11,13 @@ import LogoLoop from "@/components/ui/LogoLoop";
 import StarBorder from "@/components/ui/StarBorder";
 import ClickSpark from "@/components/ui/ClickSpark";
 import { cn } from "@/lib/utils";
+import { CometCard } from "@/components/ui/comet-card";
+import { Cover } from "@/components/ui/cover";
+import { BentoGrid } from "@/components/ui/bento-grid";
+import { Timeline, yuvaUdyamTimelineData } from "@/components/ui/timeline";
+import { BoxesCTA } from "@/components/ui/background-boxes";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
+
 
 export default function LandingPage() {
   const navItems = [
@@ -30,6 +37,33 @@ export default function LandingPage() {
     { node: <span className="text-white font-bold text-xl tracking-widest">STARTUP INDIA</span> },
   ];
 
+  const schemes = [
+    {
+      title: "PM Mudra Yojana",
+      desc: "Collateral-free loans up to ₹10 lakh for small & micro businesses.",
+      tag: "Finance",
+      number: "01",
+    },
+    {
+      title: "Startup India",
+      desc: "Tax benefits, funding access & mentorship for eligible startups.",
+      tag: "Startup",
+      number: "02",
+    },
+    {
+      title: "Stand Up India",
+      desc: "Dedicated bank loans for SC/ST & women entrepreneurs.",
+      tag: "Inclusion",
+      number: "03",
+    },
+    {
+      title: "PMEGP Scheme",
+      desc: "Government subsidy up to 35% on projects for rural & urban youth.",
+      tag: "Employment",
+      number: "04",
+    },
+  ];
+
   return (
     <ClickSpark
       sparkColor="#38bdf8"
@@ -40,13 +74,14 @@ export default function LandingPage() {
     >
       <main className="bg-black w-full">
 
+        {/* LOADING SCREEN */}
+        <LoadingScreen />
+
         {/* FLOATING NAV */}
         <FloatingNav navItems={navItems} />
 
-        {/* ── HERO ── */}
+        {/* HERO */}
         <section className="relative min-h-screen w-full flex items-center overflow-hidden">
-
-          {/* Grid background */}
           <div
             className={cn(
               "absolute inset-0",
@@ -54,23 +89,17 @@ export default function LandingPage() {
               "[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
             )}
           />
-          {/* Radial fade over grid */}
           <div className="pointer-events-none absolute inset-0 bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
 
-          {/* Two-column layout */}
           <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-0">
 
-            {/* ── LEFT: Content ── */}
             <div className="flex-1 max-w-[560px] flex flex-col gap-6 pt-24 lg:pt-0">
-
-              {/* Badge */}
               <div className="inline-flex items-center gap-2">
                 <span className="text-cyan-400 text-xs font-mono tracking-[0.25em] uppercase">
                   + India's Career Intelligence Platform
                 </span>
               </div>
 
-              {/* Headline */}
               <h1 className="text-5xl md:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
                 <span className="text-white">Don't just apply.</span>
                 <br />
@@ -79,7 +108,6 @@ export default function LandingPage() {
                 <span className="text-white">you stand.</span>
               </h1>
 
-              {/* Flip tagline */}
               <div className="text-xl md:text-2xl font-semibold text-white">
                 Your career,{" "}
                 <FlipWords
@@ -88,13 +116,11 @@ export default function LandingPage() {
                 />
               </div>
 
-              {/* Description */}
               <p className="text-sm text-neutral-400 leading-relaxed font-mono max-w-[420px]">
                 Upload your resume. Get scored. Find your skill gaps. Build a
                 roadmap. Land the job — with AI by your side.
               </p>
 
-              {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 mt-2">
                 <button className="flex items-center gap-2 bg-cyan-500 text-black font-bold text-sm px-7 py-3.5 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-95 uppercase tracking-widest">
                   Get Started Free
@@ -111,7 +137,6 @@ export default function LandingPage() {
                 </button>
               </div>
 
-              {/* Stats */}
               <div className="flex gap-10 mt-4 pt-6 border-t border-white/10">
                 <div>
                   <p className="text-2xl font-black text-white">10K+</p>
@@ -128,23 +153,13 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* ── RIGHT: Globe ── */}
             <div className="flex-1 flex items-center justify-center lg:justify-end relative">
-              {/* Cyan glow behind globe */}
-              <div
-                className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                aria-hidden
-              >
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden>
                 <div
                   className="w-[520px] h-[520px] rounded-full opacity-15 blur-3xl"
-                  style={{
-                    background:
-                      "radial-gradient(circle, #00e5ff 0%, #0033ff 55%, transparent 100%)",
-                  }}
+                  style={{ background: "radial-gradient(circle, #00e5ff 0%, #0033ff 55%, transparent 100%)" }}
                 />
               </div>
-
-              {/* Globe component — takes its natural size */}
               <div className="w-full max-w-[680px] aspect-square">
                 <GlobeDisplay />
               </div>
@@ -205,7 +220,6 @@ export default function LandingPage() {
               What Yuva Udyam <span className="text-cyan-400">Does</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
               <CardSpotlight className="h-80" color="#0ea5e9">
                 <div className="relative z-20">
                   <p className="text-xl font-bold text-white">AI Resume Scorer</p>
@@ -214,7 +228,6 @@ export default function LandingPage() {
                   </p>
                 </div>
               </CardSpotlight>
-
               <CardSpotlight className="h-80" color="#6366f1">
                 <div className="relative z-20">
                   <p className="text-xl font-bold text-white">Skill Gap & Roadmap</p>
@@ -223,7 +236,6 @@ export default function LandingPage() {
                   </p>
                 </div>
               </CardSpotlight>
-
               <CardSpotlight className="h-80" color="#0ea5e9">
                 <div className="relative z-20">
                   <p className="text-xl font-bold text-white">AI Mock Interview</p>
@@ -232,11 +244,8 @@ export default function LandingPage() {
                   </p>
                 </div>
               </CardSpotlight>
-
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-
               <CardSpotlight className="h-80" color="#6366f1">
                 <div className="relative z-20">
                   <p className="text-xl font-bold text-white">AI Course Maker</p>
@@ -245,7 +254,6 @@ export default function LandingPage() {
                   </p>
                 </div>
               </CardSpotlight>
-
               <CardSpotlight className="h-80" color="#0ea5e9">
                 <div className="relative z-20">
                   <p className="text-xl font-bold text-white">Smart Job Matching</p>
@@ -254,7 +262,6 @@ export default function LandingPage() {
                   </p>
                 </div>
               </CardSpotlight>
-
               <CardSpotlight className="h-80" color="#6366f1">
                 <div className="relative z-20">
                   <p className="text-xl font-bold text-white">Dashboard & Alerts</p>
@@ -263,7 +270,6 @@ export default function LandingPage() {
                   </p>
                 </div>
               </CardSpotlight>
-
             </div>
           </div>
         </section>
@@ -295,17 +301,56 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* FOOTER */}
-        <section className="h-screen w-full flex items-center justify-center bg-zinc-950">
-          <div className="text-center">
-            <h2 className="text-white text-7xl md:text-9xl font-black tracking-tighter opacity-20 uppercase">
-              Yuva Udyam
-            </h2>
-            <p className="text-neutral-600 font-mono text-xs uppercase tracking-widest mt-4">
-              Empowering India's Youth. One Career at a Time.
-            </p>
+        {/* GOVERNMENT SCHEMES — COMET CARDS */}
+        <section className="w-full py-24 px-6 bg-black border-t border-neutral-900">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <p className="text-cyan-400 font-mono text-base uppercase tracking-[0.25em] mb-4">
+                + Opportunities for You
+              </p>
+              <h2 className="text-white text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
+                Government{" "}
+                <Cover className="text-cyan-400 text-5xl md:text-7xl font-black tracking-tighter leading-none py-0">SCHEMES</Cover>
+              </h2>
+              <p className="text-neutral-400 font-mono text-base mt-5 max-w-lg mx-auto">
+                Discover funding, mentorship & support programs built for India's young entrepreneurs.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {schemes.map((scheme) => (
+                <CometCard key={scheme.title}>
+                  <div className="rounded-2xl bg-zinc-900 border border-white/10 p-5 h-48 flex flex-col justify-between hover:border-cyan-500/30 transition-colors duration-300">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold uppercase tracking-widest text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded-full font-mono">
+                        {scheme.tag}
+                      </span>
+                      <span className="text-neutral-700 font-black text-xl font-mono">
+                        {scheme.number}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-lg leading-snug">
+                        {scheme.title}
+                      </h3>
+                      <p className="text-neutral-400 text-sm mt-1.5 leading-relaxed font-mono">
+                        {scheme.desc}
+                      </p>
+                    </div>
+                  </div>
+                </CometCard>
+              ))}
+            </div>
           </div>
         </section>
+
+        {/* BENTO GRID */}
+        <BentoGrid />
+
+        {/* TIMELINE */}
+        <Timeline data={yuvaUdyamTimelineData} />
+
+        {/* BOXES CTA + FOOTER */}
+        <BoxesCTA />
 
       </main>
     </ClickSpark>

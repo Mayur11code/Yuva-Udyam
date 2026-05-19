@@ -22,12 +22,16 @@ export default function OTPLoginForm() {
     setError("");
     setLoading(true);
 
+    // try {
+    //   const res = await fetch("/api/auth/request-otp", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ email }),
+    //   });
+
     try {
-      const res = await fetch("/api/auth/request-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      }) || { ok: false, json: async () => ({ message: "Network error" }) };
+      const res = {ok: true, json: async () => ({message: "dummy-otp-id", otpId: "dummy-otp-id"})};
+    
 
       const data = await res.json();
 

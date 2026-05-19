@@ -1,3 +1,14 @@
+//DEMO USE FOR BUILD
+
+import { NextResponse } from "next/server";
+
+export async function POST() {
+  return NextResponse.json({
+    message: "OTP endpoint not implemented yet",
+  });
+}
+
+
 // import { NextResponse } from "next/server";
 // import { Resend } from "resend";
 
